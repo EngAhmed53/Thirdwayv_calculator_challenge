@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.shouman.apps.thirdwayv.calculator.ui.main.MainViewModel" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/row_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/row_2">
+
+            <TextView
+                android:id="@+id/c_0"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addZeroToInput()}"
+                android:text="@string/num_0"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/c_dot"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/c_dot"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="1.2:1"
+                android:onClick="@{() -> viewModel.addDot()}"
+                android:text="@string/dot"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_0"
+                app:layout_constraintEnd_toStartOf="@id/equal"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/c_0" />
+
+            <TextView
+                android:id="@+id/equal"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:backgroundTint="@color/material_blue"
+                android:onClick="@{() -> viewModel.equal()}"
+                android:text="@string/equal"
+                app:layout_constraintDimensionRatio="2.5:1"
+                android:textColor="@color/icons"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_dot"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toEndOf="@+id/c_dot" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/row_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/row_1"
+            app:layout_constraintTop_toBottomOf="@id/row_3"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <TextView
+                android:id="@+id/c_1"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('1')}"
+                android:text="@string/num_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/c_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/c_2"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('2')}"
+                android:text="@string/num_2"
+
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_1"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/c_3"
+                app:layout_constraintStart_toEndOf="@+id/c_1" />
+
+            <TextView
+                android:id="@+id/c_3"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('3')}"
+                android:text="@string/num_3"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_2"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/add"
+                app:layout_constraintStart_toEndOf="@+id/c_2" />
+
+            <TextView
+                android:id="@+id/add"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addOperator('+')}"
+                android:text="@string/add_symbol"
+                android:textColor="@color/material_blue"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_3"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/c_3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/row_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/row_2"
+            app:layout_constraintTop_toBottomOf="@id/row_4"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <TextView
+                android:id="@+id/c_4"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('4')}"
+                android:text="@string/num_4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/c_5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/c_5"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('5')}"
+                android:text="@string/num_5"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_4"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/c_6"
+                app:layout_constraintStart_toEndOf="@+id/c_4" />
+
+            <TextView
+                android:id="@+id/c_6"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('6')}"
+                android:text="@string/num_6"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_5"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/sub"
+                app:layout_constraintStart_toEndOf="@+id/c_5" />
+
+            <TextView
+                android:id="@+id/sub"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addOperator('-')}"
+                android:text="@string/sub_symbol"
+                android:textColor="@color/material_blue"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_6"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/c_6" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/row_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/row_3"
+            app:layout_constraintTop_toBottomOf="@id/row_5"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <TextView
+                android:id="@+id/c_7"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('7')}"
+                android:text="@string/num_7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/c_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/c_8"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('8')}"
+                android:text="@string/num_8"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_7"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/c_9"
+                app:layout_constraintStart_toEndOf="@+id/c_7" />
+
+            <TextView
+                android:id="@+id/c_9"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addNumberToInput('9')}"
+                android:text="@string/num_9"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_8"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/multi"
+                app:layout_constraintStart_toEndOf="@+id/c_8" />
+
+            <TextView
+                android:id="@+id/multi"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addOperator('x')}"
+                android:text="@string/multi_symbol"
+                android:textColor="@color/material_blue"
+                app:layout_constraintBaseline_toBaselineOf="@+id/c_9"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/c_9" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/row_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/row_4"
+            app:layout_constraintTop_toBottomOf="@id/row_4"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <TextView
+                android:id="@+id/clear"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.clearAll()}"
+                android:text="@string/clear"
+                android:textColor="@color/material_red"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/undo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/undo"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.undo()}"
+                android:contentDescription="@string/undo"
+                android:src="@drawable/ic_outline_undo_24"
+                android:tint="@color/material_blue"
+                app:layout_constraintBaseline_toBaselineOf="@+id/clear"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/redo"
+                app:layout_constraintStart_toEndOf="@+id/clear" />
+
+            <ImageButton
+                android:id="@+id/redo"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.redo()}"
+                android:contentDescription="@string/redo"
+                android:src="@drawable/ic_outline_redo_24"
+                android:tint="@color/material_blue"
+                app:layout_constraintBaseline_toBaselineOf="@+id/undo"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toStartOf="@id/div"
+                app:layout_constraintStart_toEndOf="@+id/undo" />
+
+            <TextView
+                android:id="@+id/div"
+                style="@style/CalcButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.addOperator('÷')}"
+                android:text="@string/div_symbol"
+                android:textColor="@color/material_blue"
+                app:layout_constraintBaseline_toBaselineOf="@+id/redo"
+                app:layout_constraintDimensionRatio="1.2:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/redo" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/row_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/row_5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <ImageButton
+                android:id="@+id/backspace"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/undo"
+                android:onClick="@{() -> viewModel.clearOneByOne()}"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_outline_backspace_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
