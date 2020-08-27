@@ -19,13 +19,13 @@ import static org.junit.Assert.assertNotNull;
 public class MainViewModelTest {
 
     @RunWith(Parameterized.class)
-    public static class ComponentParamTests {
+    public static class NumbersParamTests {
 
         private MainViewModel mainViewModel;
         private char inputNumber;
         private String expectedResult;
 
-        public ComponentParamTests(char inputNumber, String expectedResult) {
+        public NumbersParamTests(char inputNumber, String expectedResult) {
             this.inputNumber = inputNumber;
             this.expectedResult = expectedResult;
         }
@@ -167,6 +167,51 @@ public class MainViewModelTest {
             assertEquals(actual.toString(), expected);
         }
 
+        @Test
+        public void test_addDotToScreenWhileEmpty() throws InterruptedException {
+
+            String expected = "0.";
+
+            mainViewModel.addDot();
+
+            StringBuilder actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getScreenCurrentStringLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual.toString(), expected);
+        }
+
+        @Test
+        public void test_addDotToScreenWithNumberWithoutDot() throws InterruptedException {
+
+            String expected = "1.22";
+
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addDot();
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addNumberToInput('2');
+
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        public void test_addDotToScreenWithNumberWithDot() throws InterruptedException {
+
+            String expected = "1.22";
+
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addDot();
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addDot();
+
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expected);
+        }
 
     }
 
