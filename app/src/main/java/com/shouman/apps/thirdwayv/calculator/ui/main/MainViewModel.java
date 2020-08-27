@@ -50,7 +50,9 @@ public class MainViewModel extends ViewModel {
     }
 
     public void addDot() {
-
+        StringBuilder previousStringOnScreen = getScreenCurrentString();
+        StringBuilder newScreenString = addDotToScreen(previousStringOnScreen);
+        handelInputChar(newScreenString);
     }
 
     public void undo() {
@@ -124,6 +126,26 @@ public class MainViewModel extends ViewModel {
             previousStringOnScreen.append(newChar);
         }
         return previousStringOnScreen;
+    }
+
+    @NonNull
+    private StringBuilder addDotToScreen(@NonNull StringBuilder previousStringOnScreen) {
+
+        String[] previousStringArray =
+                previousStringOnScreen
+                        .toString()
+                        .split("(?<=[-+x÷])|(?=[-+x÷])");
+
+
+        String lastIndexValue = previousStringArray[previousStringArray.length - 1];
+
+        if (isOperator(lastIndexValue) || lastIndexValue.equals("")) {
+            return previousStringOnScreen.append("0.");
+        } else if (!lastIndexValue.contains(".")) {
+            return previousStringOnScreen.append(".");
+        } else {
+            return previousStringOnScreen;
+        }
     }
 
 
