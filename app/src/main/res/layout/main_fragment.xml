@@ -9,12 +9,7 @@
         <variable
             name="view_model"
             type="com.shouman.apps.thirdwayv.calculator.ui.main.MainViewModel" />
-        <!--        <variable-->
-        <!--            name="cursorStart"-->
-        <!--            type="Integer" />-->
-        <!--        <variable-->
-        <!--            name="cursorEnd"-->
-        <!--            type="Integer" />-->
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,6 +27,7 @@
             android:gravity="end|center_vertical"
             android:maxLength="100"
             android:padding="16dp"
+            android:text="@{view_model.screenCurrentStringLiveData}"
             app:autoSizeMaxTextSize="48sp"
             app:autoSizeMinTextSize="18sp"
             app:autoSizeTextType="uniform"
@@ -50,6 +46,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_vertical|end"
             android:padding="16dp"
+            android:text="@{view_model.resultLiveData}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/secondary_text"
             app:autoSizeMaxTextSize="24sp"
