@@ -19,13 +19,13 @@ import static org.junit.Assert.assertNotNull;
 public class MainViewModelTest {
 
     @RunWith(Parameterized.class)
-    public static class AddNumberToScreen {
+    public static class ComponentParamTests {
 
         private MainViewModel mainViewModel;
         private char inputNumber;
         private String expectedResult;
 
-        public AddNumberToScreen(char inputNumber, String expectedResult) {
+        public ComponentParamTests(char inputNumber, String expectedResult) {
             this.inputNumber = inputNumber;
             this.expectedResult = expectedResult;
         }
@@ -61,7 +61,47 @@ public class MainViewModelTest {
     }
 
 
-    @Test
-    public void test_addNumberToInput1() {
+    public static class ComponentSingleTests {
+
+        private MainViewModel mainViewModel;
+        @Rule
+        public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
+
+        @Before
+        public void initTest() {
+            mainViewModel = new MainViewModel();
+        }
+
+
+        @Test
+        public void test_addZeroToScreenNoNumbers() throws InterruptedException {
+            String expected = "0.0";
+
+            mainViewModel.addZeroToInput();
+
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        public void test_addZeroToScreenWithNumbers() throws InterruptedException {
+            String expected = "12000.0";
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addZeroToInput();
+            mainViewModel.addZeroToInput();
+            mainViewModel.addZeroToInput();
+
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expected);
+        }
+
+
+
     }
+
 }

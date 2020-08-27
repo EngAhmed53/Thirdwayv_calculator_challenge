@@ -24,7 +24,9 @@ public class MainViewModel extends ViewModel {
     }
 
     public void addZeroToInput() {
-
+        StringBuilder previousStringOnScreen = getScreenCurrentString();
+        StringBuilder newScreenString = addZeroToScreen(previousStringOnScreen);
+        handelInputChar(newScreenString);
     }
 
     public void addOperator(char operator) {
@@ -78,6 +80,24 @@ public class MainViewModel extends ViewModel {
         }
 
         return previousStringOnScreen;
+    }
+
+
+    @NonNull
+    private StringBuilder addZeroToScreen(@NonNull StringBuilder previousStringOnScreen) {
+
+        String[] previousStringArray =
+                previousStringOnScreen
+                        .toString()
+                        .split("(?<=[-+x÷])|(?=[-+x÷])");
+
+
+        if (!previousStringArray[previousStringArray.length - 1].equals("0")) {
+            previousStringOnScreen.append('0');
+        }
+
+        return previousStringOnScreen;
+
     }
 
 
