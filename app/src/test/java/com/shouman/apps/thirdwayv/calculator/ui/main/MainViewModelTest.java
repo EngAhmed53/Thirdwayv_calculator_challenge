@@ -60,6 +60,46 @@ public class MainViewModelTest {
         }
     }
 
+    @RunWith(Parameterized.class)
+    public static class OperatorParamTests {
+
+        private MainViewModel mainViewModel;
+        private char inputOperator;
+        private String expectedResult;
+
+        public OperatorParamTests(char inputNumber, String expectedResult) {
+            this.inputOperator = inputNumber;
+            this.expectedResult = expectedResult;
+        }
+
+        @Rule
+        public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
+
+        @Before
+        public void initTest() {
+            mainViewModel = new MainViewModel();
+        }
+
+        @Parameterized.Parameters
+        public static List<Object[]> primeNumbers() {
+            return Arrays.asList(new Object[][]{
+                    {'+', "6.0"}, {'-', "4.0"},
+                    {'x', "5.0"}, {'÷', "5.0"}
+            });
+        }
+
+        @Test
+        public void testCaseUsingParams() throws InterruptedException {
+            mainViewModel.addNumberToInput('5');
+            mainViewModel.addNumberToInput(inputOperator);
+            mainViewModel.addNumberToInput('1');
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expectedResult);
+        }
+    }
+
 
     public static class ComponentSingleTests {
 
@@ -100,6 +140,32 @@ public class MainViewModelTest {
             assertEquals(actual, expected);
         }
 
+        @Test
+        public void test_addOperatorToInputWithNoNumbers() throws InterruptedException {
+            String expected = "0.0";
+            mainViewModel.addOperator('+');
+
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        public void test_addOperatorToScreenWithPreviousOperator() throws InterruptedException {
+            String expected = "1-5x";
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addOperator('-');
+            mainViewModel.addNumberToInput('5');
+            mainViewModel.addOperator('+');
+            mainViewModel.addOperator('-');
+            mainViewModel.addOperator('x');
+
+            StringBuilder actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getScreenCurrentStringLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual.toString(), expected);
+        }
 
 
     }

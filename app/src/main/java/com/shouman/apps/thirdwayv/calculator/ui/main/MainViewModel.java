@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Stack;
+
 public class MainViewModel extends ViewModel {
 
     @NonNull
@@ -30,7 +32,9 @@ public class MainViewModel extends ViewModel {
     }
 
     public void addOperator(char operator) {
-
+        StringBuilder previousStringOnScreen = getScreenCurrentString();
+        StringBuilder newScreenString = addOperatorToScreen(previousStringOnScreen, operator);
+        handelInputChar(newScreenString);
     }
 
     public void clearOneByOne() {
@@ -100,10 +104,72 @@ public class MainViewModel extends ViewModel {
 
     }
 
+    @NonNull
+    private StringBuilder addOperatorToScreen(@NonNull StringBuilder previousStringOnScreen, char newChar) {
 
-    private static Double calculate(@Nullable String s) {
-        if (s != null && s.length() > 0) return Double.parseDouble(s);
-        return 0.0;
+        String[] previousStringArray =
+                previousStringOnScreen
+                        .toString()
+                        .split("(?<=[-+x÷])|(?=[-+x÷])");
+
+
+        String lastIndexValue = previousStringArray[previousStringArray.length - 1];
+        if (lastIndexValue.equals("")) return new StringBuilder();
+        if (isOperator(lastIndexValue)) {
+            previousStringOnScreen.replace(
+                    previousStringOnScreen.length() - 1,
+                    previousStringOnScreen.length(),
+                    String.valueOf(newChar));
+        } else {
+            previousStringOnScreen.append(newChar);
+        }
+        return previousStringOnScreen;
+    }
+
+
+    private Double calculate(@Nullable String s) {
+        int len;
+        if (s == null || (len = s.length()) == 0) {
+            return 0.0;
+        }
+        Stack<Double> stack = new Stack<>();
+        StringBuilder num = new StringBuilder();
+        char sign = '+';
+        for (int i = 0; i < len; i++) {
+            if (Character.isDigit(s.charAt(i)) || s.charAt(i) == '.') {
+                num.append(s.charAt(i));
+            }
+
+            if ((!Character.isDigit(s.charAt(i)) && s.charAt(i) != '.') || i == len - 1) {
+
+                try {
+
+                    if (sign == '-') {
+                        stack.push(Double.parseDouble(num.toString()) * -1);
+                    }
+                    if (sign == '+') {
+                        stack.push(Double.parseDouble(num.toString()));
+                    }
+                    if (sign == 'x') {
+                        stack.push(stack.pop() * Double.parseDouble(num.toString()));
+                    }
+                    if (sign == '÷') {
+                        stack.push(stack.pop() / Double.parseDouble(num.toString()));
+                    }
+                    sign = s.charAt(i);
+                    num.setLength(0);
+
+                } catch (NumberFormatException e) {
+                    return 0.0;
+                }
+            }
+        }
+
+        double ans = 0;
+        for (double i : stack) {
+            ans += i;
+        }
+        return ans;
     }
 
 
@@ -128,4 +194,8 @@ public class MainViewModel extends ViewModel {
         ));
     }
 
+    private boolean isOperator(@NonNull String lastChar) {
+        return lastChar.equals("÷") || lastChar.equals("x")
+                || lastChar.equals("+") || lastChar.equals("-");
+    }
 }
