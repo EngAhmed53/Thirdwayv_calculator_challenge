@@ -114,6 +114,23 @@ public class MainViewModelTest {
 
 
         @Test
+        public void test_addNumberScreenAfterSingleZero() throws InterruptedException {
+            String expected = "1+10";
+
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addOperator('+');
+            mainViewModel.addZeroToInput();
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addZeroToInput();
+
+            StringBuilder actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getScreenCurrentStringLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual.toString(), expected);
+        }
+
+
+        @Test
         public void test_addZeroToScreenNoNumbers() throws InterruptedException {
             String expected = "0.0";
 
@@ -142,7 +159,7 @@ public class MainViewModelTest {
 
         @Test
         public void test_addOperatorToInputWithNoNumbers() throws InterruptedException {
-            String expected = "0.0";
+            String expected = "";
             mainViewModel.addOperator('+');
 
             String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
@@ -206,6 +223,81 @@ public class MainViewModelTest {
             mainViewModel.addNumberToInput('2');
             mainViewModel.addNumberToInput('2');
             mainViewModel.addDot();
+
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        public void test_clearOneByOne() throws InterruptedException {
+
+            String expected = "1.22";
+
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addDot();
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addNumberToInput('5');
+            mainViewModel.clearOneByOne();
+
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        public void test_clearAll() throws InterruptedException {
+
+            String expected = "";
+
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addDot();
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addNumberToInput('5');
+            mainViewModel.clearAll();
+
+            String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        public void test_equal() throws InterruptedException {
+
+            String expected = "-97.0";
+
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addOperator('+');
+            mainViewModel.addNumberToInput('2');
+            mainViewModel.addOperator('x');
+            mainViewModel.addNumberToInput('5');
+            mainViewModel.addOperator('÷');
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addZeroToInput();
+            mainViewModel.addOperator('-');
+            mainViewModel.addNumberToInput('9');
+            mainViewModel.addNumberToInput('9');
+            mainViewModel.equal();
+
+            StringBuilder actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getScreenCurrentStringLiveData());
+
+            assertNotNull(actual);
+            assertEquals(actual.toString(), expected);
+        }
+
+        @Test
+        public void test_divideByZero() throws InterruptedException {
+
+            String expected = "";
+
+            mainViewModel.addNumberToInput('1');
+            mainViewModel.addOperator('÷');
+            mainViewModel.addZeroToInput();
 
             String actual = LiveDataTestUtils.getOrAwaitValue(mainViewModel.getResultLiveData());
 

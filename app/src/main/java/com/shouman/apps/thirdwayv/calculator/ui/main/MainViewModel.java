@@ -38,15 +38,24 @@ public class MainViewModel extends ViewModel {
     }
 
     public void clearOneByOne() {
-
+        StringBuilder previousStringOnScreen = getScreenCurrentString();
+        StringBuilder newScreenString = backSpace(previousStringOnScreen);
+        handelInputChar(newScreenString);
     }
 
-    public void clearAll() {
 
+    public void clearAll() {
+        StringBuilder newScreenString = new StringBuilder();
+        handelInputChar(newScreenString);
     }
 
     public void equal() {
-
+        StringBuilder screenText = getScreenCurrentString();
+        if (screenText != null) {
+            String result = calculate(screenText.toString());
+            if (result.length() > 0)
+                setScreenCurrentString(new StringBuilder(result));
+        }
     }
 
     public void addDot() {
@@ -148,11 +157,25 @@ public class MainViewModel extends ViewModel {
         }
     }
 
+    @NonNull
+    private StringBuilder backSpace(@Nullable StringBuilder previousStringOnScreen) {
 
-    private Double calculate(@Nullable String s) {
+        if (previousStringOnScreen == null || previousStringOnScreen.length() == 0)
+            return new StringBuilder();
+
+        return previousStringOnScreen
+                .replace(
+                        previousStringOnScreen.length() - 1,
+                        previousStringOnScreen.length(),
+                        ""
+                );
+    }
+
+
+    private String calculate(@Nullable String s) {
         int len;
         if (s == null || (len = s.length()) == 0) {
-            return 0.0;
+            return "";
         }
         Stack<Double> stack = new Stack<>();
         StringBuilder num = new StringBuilder();
@@ -176,13 +199,17 @@ public class MainViewModel extends ViewModel {
                         stack.push(stack.pop() * Double.parseDouble(num.toString()));
                     }
                     if (sign == '÷') {
-                        stack.push(stack.pop() / Double.parseDouble(num.toString()));
+
+                        double value = stack.pop() / Double.parseDouble(num.toString());
+                        if (value == Double.POSITIVE_INFINITY || value == Double.NEGATIVE_INFINITY)
+                            throw new ArithmeticException();
+                        else stack.push(value);
                     }
                     sign = s.charAt(i);
                     num.setLength(0);
 
-                } catch (NumberFormatException e) {
-                    return 0.0;
+                } catch (NumberFormatException | ArithmeticException e) {
+                    return "";
                 }
             }
         }
@@ -191,7 +218,7 @@ public class MainViewModel extends ViewModel {
         for (double i : stack) {
             ans += i;
         }
-        return ans;
+        return String.valueOf(ans);
     }
 
 
@@ -212,7 +239,7 @@ public class MainViewModel extends ViewModel {
     @NonNull
     public LiveData<String> getResultLiveData() {
         return Transformations.map(screenCurrentStringLiveData, (currentStringOnScreen ->
-                String.valueOf(calculate(currentStringOnScreen.toString()))
+                (calculate(currentStringOnScreen.toString()))
         ));
     }
 
