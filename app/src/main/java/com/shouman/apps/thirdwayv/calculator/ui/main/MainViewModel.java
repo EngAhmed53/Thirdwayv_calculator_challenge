@@ -55,6 +55,7 @@ public class MainViewModel extends ViewModel {
             String result = calculate(screenText.toString());
             if (result.length() > 0)
                 setScreenCurrentString(new StringBuilder(result));
+
         }
     }
 
